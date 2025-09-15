@@ -1,0 +1,11 @@
+{
+  "name": "magazynator",
+  "version": "1.0.0",
+  "description": "A simple product management system",
+  "private": true,
+  "scripts": {},
+  "keywords": [],
+  "author": "Olek47",
+  "license": "MIT",
+  "packageManager": "pnpm@10.16.1"
+}
