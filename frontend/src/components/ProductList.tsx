@@ -64,7 +64,7 @@ const ProductCard: Component<{
       </div>
 
       <p class="text-slate-100/75 whitespace-pre-line">
-        {props.product.description ?? 'No description'}
+        {props.product.description || 'No description'}
       </p>
 
       <div class="flex">

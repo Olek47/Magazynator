@@ -14,7 +14,7 @@ const ProductEditor: Component<{
   const [ean, setEan] = createSignal(props.editingProduct?.ean ?? '')
   const [name, setName] = createSignal(props.editingProduct?.name ?? '')
   const [quantity, setQuantity] = createSignal(
-    props.editingProduct?.quantity ?? 0
+    props.editingProduct?.quantity ?? NaN
   )
   const [location, setLocation] = createSignal(
     props.editingProduct?.location ?? ''
