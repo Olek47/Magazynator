@@ -6,16 +6,18 @@ import ProductEditor from './ProductEditor'
 
 const App: Component = () => {
   const [search, setSearch] = createSignal('')
-  const [minStock, setMinStock] = createSignal(0)
+  const [minStock, setMinStock] = createSignal<number>(NaN)
+  const [maxStock, setMaxStock] = createSignal<number>(NaN)
 
   const [products, { refetch }] = createResource(
     () => {
       return {
         search: search(),
         minStock: minStock(),
+        maxStock: maxStock(),
       }
     },
-    async (data) => getProducts(data.search, data.minStock)
+    async (data) => getProducts(data.search, data.minStock, data.maxStock)
   )
 
   const [isOpen, setIsOpen] = createSignal(false)
@@ -38,7 +40,15 @@ const App: Component = () => {
           class="w-32 p-1 border-2 border-violet-500 rounded outline-none"
           onInput={(e) => setMinStock(parseInt(e.target.value, 10))}
           min="0"
-          value="0"
+          placeholder="Min"
+        />
+
+        <input
+          type="number"
+          class="w-32 p-1 border-2 border-violet-500 rounded outline-none"
+          onInput={(e) => setMaxStock(parseInt(e.target.value, 10))}
+          min="0"
+          placeholder="Max"
         />
 
         <button

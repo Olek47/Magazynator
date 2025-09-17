@@ -20,8 +20,9 @@ export class ProductsService {
   async findAll(query: {
     search?: string;
     minStock?: number;
+    maxStock?: number;
   }): Promise<Product[]> {
-    const { search, minStock } = query;
+    const { search, minStock, maxStock } = query;
 
     const qb = this.productRepository.createQueryBuilder('product');
 
@@ -36,6 +37,10 @@ export class ProductsService {
 
     if (minStock !== undefined && !isNaN(minStock)) {
       qb.andWhere('product.quantity >= :minStock', { minStock });
+    }
+
+    if (maxStock !== undefined && !isNaN(maxStock)) {
+      qb.andWhere('product.quantity <= :maxStock', { maxStock });
     }
 
     qb.orderBy('product.name', 'ASC');

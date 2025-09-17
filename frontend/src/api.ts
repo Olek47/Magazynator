@@ -19,11 +19,19 @@ const API_URL = 'http://localhost:3000/api/v1'
 
 export async function getProducts(
   search?: string,
-  minStock?: number
+  minStock?: number,
+  maxStock?: number
 ): Promise<Product[]> {
   const params = new URLSearchParams()
   if (search) params.append('search', search)
-  if (minStock) params.append('minStock', minStock.toString())
+
+  if (minStock !== undefined && !isNaN(minStock)) {
+    params.append('minStock', minStock.toString())
+  }
+
+  if (maxStock !== undefined && !isNaN(maxStock)) {
+    params.append('maxStock', maxStock.toString())
+  }
 
   const res = await fetch(`${API_URL}/products?${params.toString()}`)
   const json = await res.json()

@@ -22,8 +22,14 @@ const ProductCard: Component<{
 
   return (
     <div class="p-2 my-2 min-h-32 grid grid-cols-[12rem_1fr_min-content] grid-rows-[min-content_1fr_min-content] gap-x-4 rounded hover:bg-slate-800">
-      <Show when={props.product.imageFile} fallback={<div class="row-span-3"></div>}>
-        <img src={`${IMAGE_URL}${props.product.imageFile}`} class="row-span-3" />
+      <Show
+        when={props.product.imageFile}
+        fallback={<div class="row-span-3"></div>}
+      >
+        <img
+          src={`${IMAGE_URL}${props.product.imageFile}`}
+          class="row-span-3"
+        />
       </Show>
 
       <div class="flex">

@@ -38,8 +38,9 @@ export class ProductsController {
   findAll(
     @Query('search') search?: string,
     @Query('minStock') minStock?: number,
+    @Query('maxStock') maxStock?: number,
   ) {
-    return this.productsService.findAll({ search, minStock });
+    return this.productsService.findAll({ search, minStock, maxStock });
   }
 
   @Get(':id')
