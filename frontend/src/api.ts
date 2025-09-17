@@ -20,7 +20,7 @@ const API_URL = 'http://localhost:3000/api/v1'
 export async function getProducts(
   search?: string,
   minStock?: number,
-  maxStock?: number
+  maxStock?: number,
 ): Promise<Product[]> {
   const params = new URLSearchParams()
   if (search) params.append('search', search)
@@ -59,7 +59,7 @@ export async function createProduct(data: CreateProduct): Promise<Product> {
 
 export async function updateProduct(
   id: string,
-  data: Partial<CreateProduct>
+  data: Partial<CreateProduct>,
 ): Promise<Product> {
   const res = await fetch(`${API_URL}/products/${id}`, {
     method: 'PATCH',
@@ -77,7 +77,7 @@ export async function deleteProduct(id: string): Promise<void> {
 
 export async function uploadImage(
   id: string,
-  file: File
+  file: File,
 ): Promise<CreateProduct> {
   const formData = new FormData()
   formData.append('image', file)

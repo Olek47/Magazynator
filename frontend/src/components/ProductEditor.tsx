@@ -14,13 +14,13 @@ const ProductEditor: Component<{
   const [ean, setEan] = createSignal(props.editingProduct?.ean ?? '')
   const [name, setName] = createSignal(props.editingProduct?.name ?? '')
   const [quantity, setQuantity] = createSignal(
-    props.editingProduct?.quantity ?? NaN
+    props.editingProduct?.quantity ?? NaN,
   )
   const [location, setLocation] = createSignal(
-    props.editingProduct?.location ?? ''
+    props.editingProduct?.location ?? '',
   )
   const [description, setDescription] = createSignal(
-    props.editingProduct?.description ?? ''
+    props.editingProduct?.description ?? '',
   )
   const [imageFile, setImageFile] = createSignal<File | null>(null)
 

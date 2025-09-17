@@ -17,7 +17,7 @@ const App: Component = () => {
         maxStock: maxStock(),
       }
     },
-    async (data) => getProducts(data.search, data.minStock, data.maxStock)
+    async (data) => getProducts(data.search, data.minStock, data.maxStock),
   )
 
   const [isOpen, setIsOpen] = createSignal(false)

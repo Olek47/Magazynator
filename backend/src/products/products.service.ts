@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Product } from './entities/product.entity';
+import { Injectable, NotFoundException } from '@nestjs/common'
+import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { Product } from './entities/product.entity'
 
 @Injectable()
 export class ProductsService {
@@ -13,18 +13,18 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Product> {
-    const product = this.productRepository.create(createProductDto);
-    return this.productRepository.save(product);
+    const product = this.productRepository.create(createProductDto)
+    return this.productRepository.save(product)
   }
 
   async findAll(query: {
-    search?: string;
-    minStock?: number;
-    maxStock?: number;
+    search?: string
+    minStock?: number
+    maxStock?: number
   }): Promise<Product[]> {
-    const { search, minStock, maxStock } = query;
+    const { search, minStock, maxStock } = query
 
-    const qb = this.productRepository.createQueryBuilder('product');
+    const qb = this.productRepository.createQueryBuilder('product')
 
     if (search) {
       qb.where(
@@ -32,27 +32,27 @@ export class ProductsService {
         {
           search: `%${search.toLowerCase()}%`,
         },
-      );
+      )
     }
 
     if (minStock !== undefined && !isNaN(minStock)) {
-      qb.andWhere('product.quantity >= :minStock', { minStock });
+      qb.andWhere('product.quantity >= :minStock', { minStock })
     }
 
     if (maxStock !== undefined && !isNaN(maxStock)) {
-      qb.andWhere('product.quantity <= :maxStock', { maxStock });
+      qb.andWhere('product.quantity <= :maxStock', { maxStock })
     }
 
-    qb.orderBy('product.name', 'ASC');
-    return qb.getMany();
+    qb.orderBy('product.name', 'ASC')
+    return qb.getMany()
   }
 
   async findOne(id: string): Promise<Product> {
-    const product = await this.productRepository.findOneBy({ id });
+    const product = await this.productRepository.findOneBy({ id })
     if (!product) {
-      throw new NotFoundException(`Product with ID "${id}" not found`);
+      throw new NotFoundException(`Product with ID "${id}" not found`)
     }
-    return product;
+    return product
   }
 
   async update(
@@ -62,21 +62,21 @@ export class ProductsService {
     const product = await this.productRepository.preload({
       id,
       ...updateProductDto,
-    });
+    })
     if (!product) {
-      throw new NotFoundException(`Product with ID "${id}" not found`);
+      throw new NotFoundException(`Product with ID "${id}" not found`)
     }
-    return this.productRepository.save(product);
+    return this.productRepository.save(product)
   }
 
   async remove(id: string): Promise<void> {
-    const result = await this.productRepository.delete(id);
+    const result = await this.productRepository.delete(id)
     if (result.affected === 0) {
-      throw new NotFoundException(`Product with ID "${id}" not found`);
+      throw new NotFoundException(`Product with ID "${id}" not found`)
     }
   }
 
   async save(product: Product): Promise<Product> {
-    return this.productRepository.save(product);
+    return this.productRepository.save(product)
   }
 }

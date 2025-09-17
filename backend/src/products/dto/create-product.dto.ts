@@ -5,25 +5,25 @@ import {
   IsString,
   MaxLength,
   Min,
-} from 'class-validator';
+} from 'class-validator'
 
 export class CreateProductDto {
   @IsEAN()
-  ean: string;
+  ean: string
 
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  name: string;
+  name: string
 
   @IsInt()
   @Min(0)
-  quantity: number;
+  quantity: number
 
   @IsString()
   @MaxLength(255)
-  location?: string;
+  location?: string
 
   @IsString()
-  description?: string;
+  description?: string
 }

@@ -13,17 +13,17 @@ import {
   UseGuards,
   Req,
   BadRequestException,
-} from '@nestjs/common';
-import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
+} from '@nestjs/common'
+import { ProductsService } from './products.service'
+import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
+import { FileInterceptor } from '@nestjs/platform-express'
+import { diskStorage } from 'multer'
+import { extname } from 'path'
 import {
   ProductExistsGuard,
   type ProductRequest,
-} from './guards/product-exists.guard';
+} from './guards/product-exists.guard'
 
 @Controller('products')
 export class ProductsController {
@@ -31,7 +31,7 @@ export class ProductsController {
 
   @Post()
   create(@Body() createProductDto: CreateProductDto) {
-    return this.productsService.create(createProductDto);
+    return this.productsService.create(createProductDto)
   }
 
   @Get()
@@ -40,12 +40,12 @@ export class ProductsController {
     @Query('minStock') minStock?: number,
     @Query('maxStock') maxStock?: number,
   ) {
-    return this.productsService.findAll({ search, minStock, maxStock });
+    return this.productsService.findAll({ search, minStock, maxStock })
   }
 
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.productsService.findOne(id);
+    return this.productsService.findOne(id)
   }
 
   @Patch(':id')
@@ -53,12 +53,12 @@ export class ProductsController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productsService.update(id, updateProductDto);
+    return this.productsService.update(id, updateProductDto)
   }
 
   @Delete(':id')
   remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.productsService.remove(id);
+    return this.productsService.remove(id)
   }
 
   @Post(':id/upload-image')
@@ -68,15 +68,15 @@ export class ProductsController {
       storage: diskStorage({
         destination: './uploads',
         filename: (req, file, cb) => {
-          const ext = extname(file.originalname);
-          cb(null, `${Date.now()}${ext}`);
+          const ext = extname(file.originalname)
+          cb(null, `${Date.now()}${ext}`)
         },
       }),
       fileFilter: (req, file, cb) => {
         if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-          cb(null, true);
+          cb(null, true)
         } else {
-          cb(new Error('Only images are allowed...'), false);
+          cb(new Error('Only images are allowed...'), false)
         }
       },
     }),
@@ -87,9 +87,9 @@ export class ProductsController {
     @Req() req: ProductRequest,
   ) {
     if (!file) {
-      throw new BadRequestException('Image is required');
+      throw new BadRequestException('Image is required')
     }
-    req.product.imageFile = `${file.filename}`;
-    return this.productsService.save(req.product);
+    req.product.imageFile = `${file.filename}`
+    return this.productsService.save(req.product)
   }
 }

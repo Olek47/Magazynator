@@ -4,34 +4,34 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-} from 'typeorm';
+} from 'typeorm'
 
 @Entity('products')
 export class Product {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: string
 
   @Column({ type: 'varchar', length: 14, unique: true })
-  ean: string;
+  ean: string
 
   @Column({ type: 'varchar', length: 255 })
-  name: string;
+  name: string
 
   @Column({ type: 'int' })
-  quantity: number;
+  quantity: number
 
   @Column({ type: 'varchar', length: 255 })
-  location: string;
+  location: string
 
   @Column({ type: 'text' })
-  description: string;
+  description: string
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  imageFile: string;
+  imageFile: string
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date
 }

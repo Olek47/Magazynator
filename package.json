@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "A simple product management system",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "format": "prettier --write ."
+  },
   "keywords": [],
   "author": "Olek47",
   "license": "MIT",
+  "devDependencies": {
+    "prettier": "3.6.2"
+  },
   "packageManager": "pnpm@10.16.1"
 }
