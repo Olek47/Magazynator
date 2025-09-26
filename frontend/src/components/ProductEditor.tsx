@@ -8,23 +8,22 @@ import {
 } from '../api'
 
 const ProductEditor: Component<{
-  onSuccess: () => void
-  editingProduct: Product | null
+  editingProduct?: Product
 }> = (props) => {
-  const [ean, setEan] = createSignal(props.editingProduct?.ean ?? '')
-  const [name, setName] = createSignal(props.editingProduct?.name ?? '')
-  const [quantity, setQuantity] = createSignal(
+  const [ean, setEan] = createSignal<string>(props.editingProduct?.ean ?? '')
+  const [name, setName] = createSignal<string>(props.editingProduct?.name ?? '')
+  const [quantity, setQuantity] = createSignal<number>(
     props.editingProduct?.quantity ?? NaN,
   )
-  const [location, setLocation] = createSignal(
+  const [location, setLocation] = createSignal<string>(
     props.editingProduct?.location ?? '',
   )
-  const [description, setDescription] = createSignal(
+  const [description, setDescription] = createSignal<string>(
     props.editingProduct?.description ?? '',
   )
   const [imageFile, setImageFile] = createSignal<File | null>(null)
 
-  const [isSubmitting, setIsSubmitting] = createSignal(false)
+  const [isSubmitting, setIsSubmitting] = createSignal<boolean>(false)
 
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault()
@@ -46,7 +45,6 @@ const ProductEditor: Component<{
       if (imageFile()) {
         await uploadImage(res.id, imageFile()!)
       }
-      props.onSuccess()
     } catch (e) {
       alert(e)
     } finally {
@@ -55,72 +53,74 @@ const ProductEditor: Component<{
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="ean"
-        maxlength="14"
-        class="block p-1 my-2 w-full text-sm border-2 border-violet-500 rounded outline-none"
-        placeholder="EAN"
-        required
-        onInput={(e) => setEan(e.target.value)}
-        value={ean()}
-      />
+    <div class="max-w-lg mx-auto p-4 bg-base-200 rounded-box">
+      <h2 class="text-2xl font-semibold text-center mb-4 text-primary">
+        {props.editingProduct ? 'Edit product' : 'Create new product'}
+      </h2>
 
-      <input
-        type="text"
-        name="name"
-        maxlength="256"
-        class="block p-1 my-2 w-full text-sm border-2 border-violet-500 rounded outline-none"
-        placeholder="Product Title"
-        required
-        onInput={(e) => setName(e.target.value)}
-        value={name()}
-      />
+      <form class="space-y-4" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          maxlength="14"
+          class="input w-full"
+          placeholder="EAN"
+          required
+          onInput={(e) => setEan(e.target.value)}
+          value={ean()}
+        />
 
-      <input
-        type="number"
-        name="quantity"
-        min="0"
-        class="block p-1 my-2 w-full text-sm border-2 border-violet-500 rounded outline-none"
-        placeholder="Quantity"
-        required
-        onInput={(e) => setQuantity(parseInt(e.target.value, 10))}
-        value={quantity()}
-      />
+        <input
+          type="text"
+          maxlength="256"
+          class="input w-full"
+          placeholder="Product Title"
+          required
+          onInput={(e) => setName(e.target.value)}
+          value={name()}
+        />
 
-      <input
-        type="text"
-        name="location"
-        maxlength="256"
-        class="block p-1 my-2 w-full text-sm border-2 border-violet-500 rounded outline-none"
-        placeholder="Location (optional)"
-        onInput={(e) => setLocation(e.target.value)}
-        value={location()}
-      />
+        <input
+          type="number"
+          min="0"
+          class="input w-full"
+          placeholder="Quantity"
+          required
+          onInput={(e) => setQuantity(parseInt(e.target.value, 10))}
+          value={quantity()}
+        />
 
-      <textarea
-        name="description"
-        class="block p-1 my-2 w-full text-sm border-2 border-violet-500 rounded outline-none"
-        placeholder="Product Description (optional)"
-        onInput={(e) => setDescription(e.target.value)}
-        value={description()}
-      ></textarea>
+        <input
+          type="text"
+          maxlength="256"
+          class="input w-full"
+          placeholder="Location (optional)"
+          onInput={(e) => setLocation(e.target.value)}
+          value={location()}
+        />
 
-      <input
-        type="file"
-        accept="image/*"
-        class="block p-1 my-2 w-full text-sm border-2 border-violet-500 rounded outline-none"
-        onChange={(e) => setImageFile(e.target.files?.[0] ?? null)}
-      />
+        <textarea
+          class="textarea w-full"
+          placeholder="Product Description (optional)"
+          onInput={(e) => setDescription(e.target.value)}
+          value={description()}
+        ></textarea>
 
-      <input
-        type="submit"
-        value={isSubmitting() ? 'Saving...' : 'Save'}
-        class="block p-1 my-2 w-full text-sm border-2 border-violet-500 rounded outline-none cursor-pointer transition hover:bg-slate-700 disabled:bg-slate-700"
-        disabled={isSubmitting()}
-      />
-    </form>
+        <input
+          type="file"
+          accept="image/*"
+          class="file-input w-full"
+          onInput={(e) => setImageFile(e.target.files?.[0] ?? null)}
+        />
+
+        <button
+          type="submit"
+          class="btn btn-primary w-full"
+          disabled={isSubmitting()}
+        >
+          {isSubmitting() ? 'Saving...' : 'Save'}
+        </button>
+      </form>
+    </div>
   )
 }
 
