@@ -9,6 +9,7 @@ import {
 
 const ProductEditor: Component<{
   editingProduct?: Product
+  onSuccess?: () => void
 }> = (props) => {
   const [ean, setEan] = createSignal<string>(props.editingProduct?.ean ?? '')
   const [name, setName] = createSignal<string>(props.editingProduct?.name ?? '')
@@ -44,6 +45,10 @@ const ProductEditor: Component<{
 
       if (imageFile()) {
         await uploadImage(res.id, imageFile()!)
+      }
+
+      if (props.onSuccess) {
+        props.onSuccess()
       }
     } catch (e) {
       alert(e)

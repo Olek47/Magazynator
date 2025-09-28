@@ -7,14 +7,19 @@ const Editor: Component = () => {
   const params = useParams()
 
   if (!params.id) {
-    return <ProductEditor />
+    return (
+      <ProductEditor onSuccess={() => alert('Product created successfully!')} />
+    )
   }
 
   const [product] = createResource(async () => getProduct(params.id))
 
   return (
     <Show when={product()}>
-      <ProductEditor editingProduct={product()} />
+      <ProductEditor
+        editingProduct={product()}
+        onSuccess={() => alert('Product updated successfully!')}
+      />
     </Show>
   )
 }
