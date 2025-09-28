@@ -15,7 +15,8 @@ export type CreateProduct = Omit<
   'id' | 'imageFile' | 'createdAt' | 'updatedAt'
 >
 
-const API_URL = import.meta.env.VITE_API_URL ?? '/api/v1'
+export const API_URL = import.meta.env.VITE_API_URL ?? '/api/v1'
+export const UPLOADS_URL = import.meta.env.VITE_UPLOADS_URL ?? '/uploads'
 
 export async function getProducts(
   search?: string,

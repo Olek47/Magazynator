@@ -1,8 +1,5 @@
 import { Show, type Component } from 'solid-js'
-import type { Product } from '../api'
-
-// TODO: Get this from env variables or move uploads into api endpoints
-const IMAGE_URL = 'http://localhost:3000/uploads/'
+import { UPLOADS_URL, type Product } from '../api'
 
 const ProductCard: Component<{
   product: Product
@@ -13,7 +10,7 @@ const ProductCard: Component<{
     <div class="card lg:card-side bg-base-200 shadow-sm">
       <Show when={props.product.imageFile}>
         <figure class="lg:w-48">
-          <img src={IMAGE_URL + props.product.imageFile} alt="" />
+          <img src={`${UPLOADS_URL}/${props.product.imageFile}`} alt="" />
         </figure>
       </Show>
       <div class="card-body">
