@@ -2,6 +2,7 @@ import { createResource, createSignal, For, type Component } from 'solid-js'
 import { deleteProduct, getProducts } from '../api'
 import ProductCard from '../components/ProductCard'
 import { useNavigate } from '@solidjs/router'
+import Icon from '../components/Icon'
 
 const Products: Component = () => {
   const [search, setSearch] = createSignal<string>('')
@@ -33,22 +34,10 @@ const Products: Component = () => {
     <>
       <div class="join w-full mb-4">
         <label class="input grow join-item">
-          <svg
-            class="h-[1em] opacity-50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g
-              stroke-linejoin="round"
-              stroke-linecap="round"
-              stroke-width="2.5"
-              fill="none"
-              stroke="currentColor"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </g>
-          </svg>
+          <Icon
+            path="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+            class="size-[1em] opacity-50"
+          />
           <input
             type="search"
             placeholder="Search by product name or EAN"
@@ -57,21 +46,21 @@ const Products: Component = () => {
         </label>
         <input
           type="number"
-          class="input join-item w-32"
+          class="input join-item max-w-32"
           placeholder="Min stock"
           min="0"
           onInput={(e) => setMinStock(parseInt(e.target.value, 10))}
         />
         <input
           type="number"
-          class="input join-item w-32"
+          class="input join-item max-w-32"
           placeholder="Max stock"
           min="0"
           onInput={(e) => setMaxStock(parseInt(e.target.value, 10))}
         />
       </div>
 
-      <div class="space-y-4">
+      <div class="grid sm:max-lg:grid-cols-2 gap-4">
         <For each={products()}>
           {(product) => (
             <ProductCard

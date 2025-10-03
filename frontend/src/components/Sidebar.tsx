@@ -1,29 +1,11 @@
 import { A } from '@solidjs/router'
 import { For, type Component } from 'solid-js'
-
-interface NavButton {
-  title: string
-  href: string
-}
-
-const NAV_BUTTONS: NavButton[] = [
-  {
-    title: 'Home',
-    href: '/',
-  },
-  {
-    title: 'Products',
-    href: '/products',
-  },
-  {
-    title: 'Add new product',
-    href: '/editor',
-  },
-]
+import { NAV_BUTTONS } from '../nav'
+import Icon from './Icon'
 
 const Sidebar: Component = () => {
   return (
-    <aside class="w-64 bg-base-200">
+    <aside class="max-sm:hidden fixed top-0 left-0 z-10 w-64 h-full bg-base-200">
       <h1 class="text-center text-xl text-primary py-4">Magazynator</h1>
       <nav class="px-4">
         <For each={NAV_BUTTONS}>
@@ -35,7 +17,10 @@ const Sidebar: Component = () => {
               inactiveClass="border-transparent"
               activeClass="border-primary bg-base-300"
             >
-              {button.title}
+              <div class="flex items-center gap-2">
+                <Icon path={button.icon} class="size-[1.2em]" />
+                {button.title}
+              </div>
             </A>
           )}
         </For>

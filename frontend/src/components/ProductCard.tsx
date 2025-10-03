@@ -14,8 +14,8 @@ const ProductCard: Component<{
         </figure>
       </Show>
       <div class="card-body">
-        <div class="card-title text-primary">
-          <h2 class="grow">{props.product.name}</h2>
+        <div class="card-title justify-between">
+          <h2 class="text-primary">{props.product.name}</h2>
           <pre
             classList={{
               'text-error': props.product.quantity === 0,
@@ -27,19 +27,22 @@ const ProductCard: Component<{
             {props.product.quantity}
           </pre>
         </div>
-        <p class="whitespace-pre-line">
+        <p class="whitespace-pre-line min-h-12">
           {props.product.description || 'No description'}
         </p>
-        <div class="card-actions">
-          <pre class="grow self-end">
-            {props.product.ean} {props.product.location}
-          </pre>
-          <button class="btn btn-primary" onClick={props.onEdit}>
-            Edit
-          </button>
-          <button class="btn btn-error" onClick={props.onDelete}>
-            Delete
-          </button>
+        <div class="lg:flex justify-between">
+          <div class="self-end">
+            <span>{props.product.location}</span>
+            <pre>{props.product.ean}</pre>
+          </div>
+          <div class="flex gap-1">
+            <button class="btn btn-warning" onClick={props.onEdit}>
+              Edit
+            </button>
+            <button class="btn btn-error" onClick={props.onDelete}>
+              Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>
