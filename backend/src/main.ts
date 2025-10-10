@@ -2,9 +2,16 @@ import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
 import { ValidationPipe } from '@nestjs/common'
 import { NestExpressApplication } from '@nestjs/platform-express'
-import { join } from 'path'
+import path from 'path'
+import fs from 'fs'
+
+export const UPLOAD_PATH = path.join(__dirname, '..', 'uploads')
 
 async function bootstrap() {
+  if (!fs.existsSync(UPLOAD_PATH)) {
+    fs.mkdirSync(UPLOAD_PATH, { recursive: true })
+  }
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule)
 
   app.setGlobalPrefix('/api/v1')
@@ -16,7 +23,7 @@ async function bootstrap() {
     }),
   )
 
-  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+  app.useStaticAssets(UPLOAD_PATH, {
     prefix: '/uploads/',
   })
 

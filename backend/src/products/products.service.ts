@@ -1,9 +1,12 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 import { Product } from './entities/product.entity'
+import path from 'path'
+import fs from 'fs'
+import { UPLOAD_PATH } from 'src/main'
 
 @Injectable()
 export class ProductsService {
@@ -70,13 +73,39 @@ export class ProductsService {
   }
 
   async remove(id: string): Promise<void> {
-    const result = await this.productRepository.delete(id)
-    if (result.affected === 0) {
+    const product = await this.productRepository.findOneBy({ id })
+    if (!product) {
       throw new NotFoundException(`Product with ID "${id}" not found`)
     }
+    if (product.imageFile) {
+      this.deleteImageFromUploads(product.imageFile)
+    }
+    await this.productRepository.remove(product)
   }
 
-  async save(product: Product): Promise<Product> {
+  async uploadImage(id: string, file: Express.Multer.File): Promise<Product> {
+    const product = await this.productRepository.findOneBy({ id })
+    if (!product) {
+      this.deleteImageFromUploads(file.filename)
+      throw new NotFoundException(`Product with ID "${id}" not found`)
+    }
+    if (product.imageFile) {
+      this.deleteImageFromUploads(product.imageFile)
+    }
+    product.imageFile = file.filename
     return this.productRepository.save(product)
+  }
+
+  private deleteImageFromUploads(filename: string): void {
+    const filePath = path.join(UPLOAD_PATH, filename)
+    if (!filePath.startsWith(UPLOAD_PATH)) {
+      Logger.warn(`Blocked file removal outside upload directory: ${filePath}`)
+      return
+    }
+    try {
+      fs.unlinkSync(filePath)
+    } catch (e) {
+      Logger.warn(e)
+    }
   }
 }

@@ -10,8 +10,6 @@ import {
   ParseUUIDPipe,
   UseInterceptors,
   UploadedFile,
-  UseGuards,
-  Req,
   BadRequestException,
 } from '@nestjs/common'
 import { ProductsService } from './products.service'
@@ -19,11 +17,8 @@ import { CreateProductDto } from './dto/create-product.dto'
 import { UpdateProductDto } from './dto/update-product.dto'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
-import { extname } from 'path'
-import {
-  ProductExistsGuard,
-  type ProductRequest,
-} from './guards/product-exists.guard'
+import path from 'path'
+import { UPLOAD_PATH } from 'src/main'
 
 @Controller('products')
 export class ProductsController {
@@ -62,34 +57,32 @@ export class ProductsController {
   }
 
   @Post(':id/upload-image')
-  @UseGuards(ProductExistsGuard)
   @UseInterceptors(
     FileInterceptor('image', {
       storage: diskStorage({
-        destination: './uploads',
+        destination: (req, file, cb) => {
+          cb(null, UPLOAD_PATH)
+        },
         filename: (req, file, cb) => {
-          const ext = extname(file.originalname)
-          cb(null, `${Date.now()}${ext}`)
+          const ext = path.extname(file.originalname)
+          cb(null, `${Date.now()}-${Math.floor(Math.random() * 1e3)}${ext}`)
         },
       }),
       fileFilter: (req, file, cb) => {
-        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-          cb(null, true)
-        } else {
-          cb(new Error('Only images are allowed...'), false)
+        if (!file.mimetype.match(/^image\/(png|jpeg|webp)$/)) {
+          return cb(new BadRequestException('Only images are allowed'), false)
         }
+        cb(null, true)
       },
     }),
   )
   async uploadImage(
     @Param('id', ParseUUIDPipe) id: string,
     @UploadedFile() file: Express.Multer.File,
-    @Req() req: ProductRequest,
   ) {
     if (!file) {
       throw new BadRequestException('Image is required')
     }
-    req.product.imageFile = `${file.filename}`
-    return this.productsService.save(req.product)
+    return this.productsService.uploadImage(id, file)
   }
 }
