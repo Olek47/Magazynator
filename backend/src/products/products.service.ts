@@ -31,7 +31,7 @@ export class ProductsService {
 
     if (search) {
       qb.where(
-        '(LOWER(product.name) LIKE :search OR LOWER(product.ean) LIKE :search)',
+        '(LOWER(product.name) LIKE :search OR LOWER(product.code) LIKE :search)',
         {
           search: `%${search.toLowerCase()}%`,
         },

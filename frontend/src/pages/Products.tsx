@@ -40,7 +40,7 @@ const Products: Component = () => {
           />
           <input
             type="search"
-            placeholder="Search by product name or EAN"
+            placeholder="Search by product name or code"
             onInput={(e) => setSearch(e.target.value)}
           />
         </label>

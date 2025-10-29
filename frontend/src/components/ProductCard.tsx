@@ -33,7 +33,7 @@ const ProductCard: Component<{
         <div class="lg:flex justify-between">
           <div class="self-end">
             <span>{props.product.location}</span>
-            <pre>{props.product.ean}</pre>
+            <pre>{props.product.code}</pre>
           </div>
           <div class="flex gap-1">
             <button class="btn btn-warning" onClick={props.onEdit}>

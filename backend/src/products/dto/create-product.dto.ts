@@ -1,5 +1,4 @@
 import {
-  IsEAN,
   IsInt,
   IsNotEmpty,
   IsString,
@@ -8,8 +7,9 @@ import {
 } from 'class-validator'
 
 export class CreateProductDto {
-  @IsEAN()
-  ean: string
+  @IsString()
+  @MaxLength(14)
+  code: string
 
   @IsString()
   @IsNotEmpty()

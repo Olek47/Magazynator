@@ -11,8 +11,8 @@ export class Product {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column({ type: 'varchar', length: 14, unique: true })
-  ean: string
+  @Column({ type: 'varchar', length: 14 })
+  code: string
 
   @Column({ type: 'varchar', length: 255 })
   name: string

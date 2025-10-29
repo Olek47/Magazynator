@@ -11,7 +11,7 @@ const ProductEditor: Component<{
   editingProduct?: Product
   onSuccess?: () => void
 }> = (props) => {
-  const [ean, setEan] = createSignal<string>(props.editingProduct?.ean ?? '')
+  const [code, setCode] = createSignal<string>(props.editingProduct?.code ?? '')
   const [name, setName] = createSignal<string>(props.editingProduct?.name ?? '')
   const [quantity, setQuantity] = createSignal<number>(
     props.editingProduct?.quantity ?? NaN,
@@ -31,7 +31,7 @@ const ProductEditor: Component<{
     setIsSubmitting(true)
 
     const data: CreateProduct = {
-      ean: ean().padStart(14, '0'),
+      code: code(),
       name: name(),
       quantity: quantity(),
       location: location(),
@@ -68,10 +68,10 @@ const ProductEditor: Component<{
           type="text"
           maxlength="14"
           class="input w-full"
-          placeholder="EAN"
+          placeholder="Product Code"
           required
-          onInput={(e) => setEan(e.target.value)}
-          value={ean()}
+          onInput={(e) => setCode(e.target.value)}
+          value={code()}
         />
 
         <input

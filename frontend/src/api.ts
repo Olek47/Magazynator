@@ -1,6 +1,6 @@
 export interface Product {
   id: string
-  ean: string
+  code: string
   name: string
   quantity: number
   location: string
